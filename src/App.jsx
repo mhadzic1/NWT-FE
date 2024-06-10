@@ -6,17 +6,14 @@ import TopBar from "./components/TopBar";
 import TopBarUser from "./components/TopBarUser";
 import Home from "./pages/home";
 import HomeUser from "./pages/homeUser";
-import ServiceLevelAgreement from "./pages/sla";
-import ServiceLevelAgreementUser from "./pages/slaUser";
+import Logs from "./pages/sla"
+import LogsUser from "./pages/slaUser";
 import User from "./pages/user";
 import NewUser from "./pages/newUser";
 import Product from "./pages/product";
-import Consultations from "./pages/consultations";
-import Patients from "./pages/patients";
-import Doctors from "./pages/doctors";
+import Users from "./pages/doctors";
 import LoginPage from "./login";
 import Requests from "./pages/requests";
-import RequestsPage from "./components/requestsPage";
 import RequestsUser from "./pages/requestsUser";
 import NewRequestUser from "./pages/newRequestUser";
 import SingleRequestUser from "./pages/singleRequestUser"
@@ -84,7 +81,7 @@ const App = () => {
   // if path == login, render only the login page
   if (path === "/login") {
     return (
-      <div className="App scrollable">
+      <div>
         <LoginPage />
       </div>
     )
@@ -110,7 +107,7 @@ const App = () => {
               <Route path="/homeUser" element={ <HomeUser user={ user } /> } />
               <Route path="/requestsUser" element={ <RequestsUser /> } />
               <Route path="/newRequestUser" element={ <NewRequestUser /> } />
-              <Route path="/slaUser" element={ <ServiceLevelAgreementUser /> } />
+              <Route path="/logsUser" element={ <LogsUser /> } />
               <Route path="/singleRequestUser/:id" element={ <SingleRequestUser /> } />
 
             </Routes>
@@ -135,12 +132,10 @@ const App = () => {
               {/* <Route path="/homeUser" element={ <HomeUser /> } /> */ }
               <Route path="/requests" element={ <Requests /> } />
               <Route path="/login" element={ <LoginPage /> } />
-              <Route path="/sla" element={ <ServiceLevelAgreement /> } />
-              <Route path="/patients" element={ <Patients /> } />
-              <Route path="/doctors" element={ <Doctors /> } />
+              <Route path="/logs" element={ <Logs /> } />
+              <Route path="/administration" element={ <Users /> } />
               <Route path="/user/:id" element={ <User /> } />
               <Route path="/newUser" element={ <NewUser /> } />
-              <Route path="/consultations" element={ <Consultations /> } />
               <Route path="/product/:id" element={ <Product /> } />
               <Route path="/unauthorized" element={ <UnauthorizedPage /> } /> {/* Unauthorized page route */ }
               {/* <Route path="/requestsPage" element={ <RequestsPage /> } /> */ }

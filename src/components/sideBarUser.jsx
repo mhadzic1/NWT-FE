@@ -25,7 +25,7 @@ const SideBarUser = () => {
           
           <Link to="/slaUser">
             <li className="sideBar-menu-list-item">
-              <PersonOutline /> <span>Service Level Agreements</span>
+              <PersonOutline /> <span>Logs</span>
             </li>
           </Link>
         </ul>

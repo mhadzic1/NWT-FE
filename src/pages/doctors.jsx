@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { doctorsData } from "../data/dummyData";
 
-const Doctors = () => {
+const Users = () => {
   const [data, setData] = useState(doctorsData);
 
   const deleteUser = (id) => {
@@ -72,4 +72,4 @@ const Doctors = () => {
   );
 };
 
-export default Doctors;
+export default Users;

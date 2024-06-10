@@ -26,9 +26,9 @@ const Home = () => {
     return (
         <section className="p-3">
             <div className="flex gap-5 mb-6">
-                <FeaturedInfo type="Patients" value="1,200" />
-                <FeaturedInfo type="Doctors" value="3,200" />
-                <FeaturedInfo type="Consultations" value="5,000" />
+                <FeaturedInfo type="Administration" value="1,200" />
+                <FeaturedInfo type="Logs" value="3,200" />
+                <FeaturedInfo type="Requests" value="5,000" />
             </div>
 
             <div className="flex gap-4">

@@ -14,9 +14,9 @@ const SideBar = () => {
               <span>Home</span>
             </li>
           </Link>
-          <Link to="/patients">
+          <Link to="/administration">
             <li className="sideBar-menu-list-item">
-              <PersonOutline /> <span>Patients</span>
+              <PersonOutline /> <span>Administration</span>
             </li>
           </Link>
           {/* <Link to="/requestsPage">
@@ -31,9 +31,9 @@ const SideBar = () => {
             </li>
           </Link>
 
-          <Link to="/sla">
+          <Link to="/logs">
             <li className="sideBar-menu-list-item">
-              <PersonOutline /> <span>Service Level Agreements</span>
+              <PersonOutline /> <span>Logs</span>
             </li>
           </Link>
         </ul>
