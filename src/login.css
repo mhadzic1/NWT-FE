@@ -80,8 +80,8 @@ input[type="password"] {
   display: block;
   margin-bottom: 5%;
   /* Use percentage for margin-bottom */
-  opacity: 0.25;
-  height: 150vh;
+  opacity: 0.20;
+  height: 125vh;
   /* Use viewport height (vh) for height */
 }
 

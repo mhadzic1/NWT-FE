@@ -40,7 +40,7 @@ const LoginPage = () => {
     return (
         <div className="login-page">
             <div className="login-container">
-                <img src="/zzo-logo.png" alt="Logo" className="logo" />
+                <img src="/keycard.png" alt="Logo" className="logo" />
                 <form onSubmit={ handleSubmit }>
                     <div className="form-group">
                         <label htmlFor="username">Username</label>
@@ -66,7 +66,7 @@ const LoginPage = () => {
                     <button type="submit" className='LoginButton'>Login</button>
                 </form>
             </div>
-            <img src="/kanton_grb.png" alt="Logo" className="logo2" />
+            <img src="/etf_logo.png" alt="Logo" className="logo2" />
         </div>
     );
 };
