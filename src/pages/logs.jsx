@@ -3,18 +3,18 @@ import { Delete, Edit } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { slaData } from "../data/dummyData";
-import WidgetSLA from "../components/widgetSLA";
+import WidgetLogs from "../components/widgetLogs";
 
-const ServiceLevelAgreement = () => {
+const Logs = () => {
     return (
         <section className="p-3">
             <div className="flex gap-4">
                 <div className="flex-[2_2_0%]">
-                    <WidgetSLA />
+                    <WidgetLogs />
                 </div>
             </div>
         </section>
     );
 };
 
-export default ServiceLevelAgreement;
+export default Logs;

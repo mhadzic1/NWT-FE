@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { getLogsForUser } from "../api/logs/logsAPI";
+import { getLogs } from "../api/logs/logsAPI";
 
-const WidgetLogsUser = () => {
+const WidgetLogs = () => {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        getLogsForUser({})
+        getLogs({})
             .then(response => {
                 const slaData = response.data.data;
                 setData(slaData);
@@ -44,4 +44,4 @@ const WidgetLogsUser = () => {
     );
 };
 
-export default WidgetLogsUser;
+export default WidgetLogs;
