@@ -18,7 +18,7 @@ export async function login(username, password) {
                     'Content-Type': 'application/json',
                     'Authorization': `Basic ${encodedCredentials}`
                 },
-                withCredentials: true  // Include this if your backend requires credentials
+                withCredentials: true
             })
         );
 

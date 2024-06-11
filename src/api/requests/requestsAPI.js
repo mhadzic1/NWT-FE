@@ -7,7 +7,7 @@ import { getUserByUsername } from "../user/userAPI";
 import { sendEmail } from "../mailer/mailer";
 
 const api = axios.create({
-    baseURL: 'http://localhost:8080/api', // Adjust the base URL according to your API endpoint
+    baseURL: 'http://localhost:8080', // Adjust the base URL according to your API endpoint
     timeout: 5000, // Set a timeout for requests
 });
 
@@ -23,7 +23,7 @@ export async function getRequests(options) {
     let encodedCredentials = encodeCredentials(backend_username, backend_password);
 
     return await resolve(
-        api.get('/zahtjevi', {
+        api.get('/user/request', {
             params: options,
             headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem('token') }
         })

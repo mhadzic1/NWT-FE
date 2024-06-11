@@ -52,27 +52,17 @@ const WidgetLG = () => {
                 <thead>
                     <tr>
                         <th>User</th>
-                        <th>Date</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Status Details</th>
-                        <th>Raise</th>
-                        <th>Priority</th>
+                        <th>Room</th>
+                        <th>Team</th>
                     </tr>
                 </thead>
                 <tbody>
                     { data && data.map((item) => (
                         <StatusRow
-                            key={ item.id }
-                            id={ item.id }
-                            avatarSrc="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                            name={ item.username }
-                            date={ new Date(item.kreirano).toLocaleDateString() }
-                            task={ item.opis }
-                            initialStatus={ item.status }
-                            initialPriority={ item.prioritet }
-                            initialRaise={ item.superAdminZahtjev }
-                            initialStatusDetails={ item.detaljnijiStatus }
+                            key={item.id}
+                            name={item.user.username}
+                            room={item.roomId}
+                            team={item.team.name}
                         />
                     )) }
                     {/* <StatusRow

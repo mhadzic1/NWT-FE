@@ -6,7 +6,7 @@ import TopBar from "./components/TopBar";
 import TopBarUser from "./components/TopBarUser";
 import Home from "./pages/home";
 import HomeUser from "./pages/homeUser";
-import Logs from "./pages/sla"
+import Logs from "./pages/logs"
 import LogsUser from "./pages/slaUser";
 import User from "./pages/user";
 import NewUser from "./pages/newUser";
