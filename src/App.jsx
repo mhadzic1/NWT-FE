@@ -6,12 +6,12 @@ import TopBar from "./components/TopBar";
 import TopBarUser from "./components/TopBarUser";
 import Home from "./pages/home";
 import HomeUser from "./pages/homeUser";
-import Logs from "./pages/sla"
-import LogsUser from "./pages/slaUser";
+import Logs from "./pages/logs"
+import LogsUser from "./pages/logsUser";
 import User from "./pages/user";
 import NewUser from "./pages/newUser";
 import Product from "./pages/product";
-import Users from "./pages/doctors";
+import Users from "./pages/users";
 import LoginPage from "./login";
 import Requests from "./pages/requests";
 import RequestsUser from "./pages/requestsUser";
@@ -86,7 +86,7 @@ const App = () => {
       </div>
     )
   }
-  else if (path === "/homeUser" || path === "/requestsUser" || path === "/slaUser" || path === "/newRequestUser" || singleRequestPath(path)) {
+  else if (path === "/homeUser" || path === "/requestsUser" || path === "/logsUser" || path === "/newRequestUser" || singleRequestPath(path)) {
 
     return (
       <main className="font-body scrollable">

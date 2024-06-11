@@ -23,7 +23,7 @@ const SideBarUser = () => {
             </li>
           </Link>
           
-          <Link to="/slaUser">
+          <Link to="/logsUser">
             <li className="sideBar-menu-list-item">
               <PersonOutline /> <span>Logs</span>
             </li>
