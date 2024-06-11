@@ -52,7 +52,7 @@ export async function getRequestByUserId(userId) {
     let encodedCredentials = encodeCredentials(backend_username, backend_password);
 
     return await resolve(
-        api.get(`/zahtjevi/user/${userId}`, {
+        api.get(`/user/request/${userId}`, {
             headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem('token') }
         })
     );
