@@ -12,18 +12,21 @@ export async function login(username, password) {
         const response = await resolve(
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/auth/login',
-                data: { username, password }
+                url: 'http://localhost:8080/user/auth/login',
+                data: { username, password },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${encodedCredentials}`
+                },
+                withCredentials: true  // Include this if your backend requires credentials
             })
         );
 
-        // Assuming the JWT token is in response.data.token
+        // Assuming the JWT token is in response.data.data
         const token = response.data.data;
-        console.log(token);
         if (token) {
             // Store the token in sessionStorage
             sessionStorage.setItem('token', token);
-            console.log('Token stored in sessionStorage:', token);
 
             // Decode the token to get user role
             const decodedToken = jwtDecode(token);
@@ -34,7 +37,19 @@ export async function login(username, password) {
             throw new Error('Login failed: No token received');
         }
     } catch (error) {
-        console.error('Login failed:', error);
-        throw error;
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.error('Login failed:', error.response.data);
+            throw new Error(`Login failed: ${error.response.data.message || error.response.statusText}`);
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.error('No response received:', error.request);
+            throw new Error('Login failed: No response received from the server');
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error('Error', error.message);
+            throw new Error(`Login failed: ${error.message}`);
+        }
     }
 }

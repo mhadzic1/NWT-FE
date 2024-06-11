@@ -11,7 +11,7 @@ import LogsUser from "./pages/slaUser";
 import User from "./pages/user";
 import NewUser from "./pages/newUser";
 import Product from "./pages/product";
-import Users from "./pages/doctors";
+import Users from "./pages/users";
 import LoginPage from "./login";
 import Requests from "./pages/requests";
 import RequestsUser from "./pages/requestsUser";
