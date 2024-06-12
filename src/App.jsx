@@ -16,6 +16,7 @@ import LoginPage from "./login";
 import Requests from "./pages/requests";
 import RequestsUser from "./pages/requestsUser";
 import NewRequestUser from "./pages/newRequestUser";
+import AddUser from "./components/AddUser";
 import SingleRequestUser from "./pages/singleRequestUser"
 import UnauthorizedPage from './pages/unauthorizedPage';
 import NotFoundPage from './pages/404Page';
@@ -137,6 +138,7 @@ const App = () => {
               <Route path="/user/:id" element={ <User /> } />
               <Route path="/newUser" element={ <NewUser /> } />
               <Route path="/product/:id" element={ <Product /> } />
+              <Route path="/add-user" element={<AddUser /> } />
               <Route path="/unauthorized" element={ <UnauthorizedPage /> } /> {/* Unauthorized page route */ }
               {/* <Route path="/requestsPage" element={ <RequestsPage /> } /> */ }
               <Route path="*" element={ <NotFoundPage /> } />

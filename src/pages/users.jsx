@@ -1,14 +1,17 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Avatar } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { getAllUsers } from "../api/user/userAPI";
+import { Button } from "@mui/material";
+import AddUser from "../components/AddUser";
 
 const Users = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [openAddUserModal, setOpenAddUserModal] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -54,7 +57,7 @@ const Users = () => {
       width: 200,
       renderCell: (params) => (
           <div className="flex gap-2">
-            <Link to={"/user/" + params.row.id}>
+            <Link to={`/user/${params.row.id}`}>
               <button className="bg-green-500 font-bold text-white px-3 py-1 rounded-md">
                 Edit <Edit fontSize="small" />
               </button>
@@ -70,12 +73,28 @@ const Users = () => {
     },
   ];
 
+  const handleOpenAddUserModal = () => {
+    setOpenAddUserModal(true);
+  };
+
+  const handleCloseAddUserModal = () => {
+    setOpenAddUserModal(false);
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error loading users: {error.message}</div>;
 
   return (
       <>
-        <h1 className="text-2xl font-semibold">Doctors</h1>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-semibold">Users</h1>
+          <button
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-300"
+              onClick={handleOpenAddUserModal}
+          >
+            Add New User
+          </button>
+        </div>
         <div className="h-[700px] shadow-lg p-6 m-2">
           <DataGrid
               rows={data}
@@ -86,6 +105,7 @@ const Users = () => {
               disableSelectionOnClick
           />
         </div>
+        <AddUser open={openAddUserModal} onClose={handleCloseAddUserModal}/>
       </>
   );
 };

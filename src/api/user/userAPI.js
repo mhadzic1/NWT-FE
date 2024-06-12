@@ -43,3 +43,25 @@ export async function getAllUsers() {
         throw error;
     }
 }
+
+export async function addUser(userData) {
+    // Add active: true to the userData object
+    userData = { ...userData, active: true };
+
+    const token = sessionStorage.getItem('token');
+
+    try {
+        const response = await axios({
+            method: 'post',
+            url: 'http://localhost:8080/user',
+            headers: { 'Authorization': 'Bearer ' + token },
+            data: userData,
+            withCredentials: true
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error adding user:", error);
+        throw error;
+    }
+}
+

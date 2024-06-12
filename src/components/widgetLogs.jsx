@@ -7,6 +7,7 @@ const WidgetLogs = () => {
     useEffect(() => {
         getLogs({})
             .then(response => {
+                console.log(response);
                 const slaData = response.data.data;
                 setData(slaData);
             })
@@ -31,11 +32,11 @@ const WidgetLogs = () => {
                 {data && data.map((item) => (
                     <tr key={item.id}>
                         <td>{item.id}</td>
-                        <td>{item.opis}</td>
-                        <td>{item.tipUsluge}</td>
+                        <td>{item.description}</td>
+                        <td>{item.entryType}</td>
                         <td>{item.roomId}</td>
-                        <td>{new Date(item.datumSklapanja).toLocaleDateString()}</td>
-                        <td>{item.userId}</td>
+                        <td>{new Date(item.timestamp).toLocaleDateString()}</td>
+                        <td>{item.user.username}</td>
                     </tr>
                 ))}
                 </tbody>

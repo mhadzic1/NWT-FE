@@ -62,7 +62,7 @@ const WidgetLG = () => {
                             key={item.id}
                             name={item.user.username}
                             room={item.roomId}
-                            team={item.team.name}
+                            team={item.user.team}
                         />
                     )) }
                     {/* <StatusRow
