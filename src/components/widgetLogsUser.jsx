@@ -7,6 +7,7 @@ const WidgetLogsUser = () => {
     useEffect(() => {
         getLogsForUser({})
             .then(response => {
+                console.log(response)
                 const slaData = response.data.data;
                 setData(slaData);
             })
@@ -20,7 +21,6 @@ const WidgetLogsUser = () => {
                 <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Description</th>
                     <th>Entry Type</th>
                     <th>Room Id</th>
                     <th>Timestamp</th>
@@ -30,10 +30,9 @@ const WidgetLogsUser = () => {
                 {data && data.map((item) => (
                     <tr key={item.id}>
                         <td>{item.id}</td>
-                        <td>{item.opis}</td>
-                        <td>{item.tipUsluge}</td>
+                        <td>{item.entryType}</td>
                         <td>{item.roomId}</td>
-                        <td>{new Date(item.datumSklapanja).toLocaleDateString()}</td>
+                        <td>{new Date(item.timestamp).toLocaleDateString()}</td>
                     </tr>
                 ))}
                 </tbody>

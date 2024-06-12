@@ -50,9 +50,9 @@ export async function deleteUserRequest(requestId) {
 
 export async function getRequestByUserId(userId) {
     let encodedCredentials = encodeCredentials(backend_username, backend_password);
-
+    console.log(userId)
     return await resolve(
-        api.get(`/user/request/${userId}`, {
+        api.get(`/user/request/user/${userId}`, {
             headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem('token') }
         })
     );

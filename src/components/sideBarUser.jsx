@@ -28,6 +28,12 @@ const SideBarUser = () => {
               <PersonOutline /> <span>Logs</span>
             </li>
           </Link>
+
+          <Link to="/user-rooms">
+            <li className="sideBar-menu-list-item">
+              <PersonOutline /> <span>My Rooms</span>
+            </li>
+          </Link>
         </ul>
       </div>
     </div>
