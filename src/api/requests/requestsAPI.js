@@ -134,3 +134,25 @@ export async function saveNewRequest(newRequest) {
         return false;
     }
 }
+
+export async function changeStatus(requestId, newStatus) {
+    const token = sessionStorage.getItem('token');
+
+    try {
+        const response = await axios({
+            method: 'put',
+            url: `http://localhost:8080/user/request/status/${requestId}`,
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            },
+            data: {
+                status: newStatus
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error changing request status:", error);
+        throw error;
+    }
+}
