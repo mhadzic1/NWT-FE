@@ -4,14 +4,18 @@ import { Avatar } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { Link, Navigate } from "react-router-dom";
 import { getAllUsers } from "../api/user/userAPI";
-import { Button } from "@mui/material";
+import { Button, Snackbar } from "@mui/material";
 import AddUser from "../components/AddUser";
+import {deleteUserByUsername} from "../api/user/userAPI";
 
 const Users = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openAddUserModal, setOpenAddUserModal] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -28,8 +32,23 @@ const Users = () => {
     fetchUsers();
   }, []);
 
-  const deleteUser = (id) => {
-    setData(data.filter((item) => item.id !== id));
+  const deleteUser = async (username) => {
+    try {
+      await deleteUserByUsername(username);
+      setData(data.filter((item) => item.username !== username));
+      setSnackbarMessage("User deleted successfully");
+      setSnackbarSeverity("success");
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      setSnackbarMessage("Error deleting user");
+      setSnackbarSeverity("error");
+    } finally {
+      setSnackbarOpen(true);
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
   const columns = [
@@ -63,7 +82,7 @@ const Users = () => {
               </button>
             </Link>
             <button
-                onClick={() => deleteUser(params.row.id)}
+                onClick={() => deleteUser(params.row.username)}
                 className="bg-red-500 font-bold text-white px-3 py-1 rounded-md"
             >
               Delete <Delete fontSize="small" />
@@ -80,9 +99,6 @@ const Users = () => {
   const handleCloseAddUserModal = () => {
     setOpenAddUserModal(false);
   };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error loading users: {error.message}</div>;
 
   return (
       <>
@@ -106,6 +122,13 @@ const Users = () => {
           />
         </div>
         <AddUser open={openAddUserModal} onClose={handleCloseAddUserModal}/>
+        <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleCloseSnackbar}
+            message={snackbarMessage}
+            severity={snackbarSeverity}
+        />
       </>
   );
 };

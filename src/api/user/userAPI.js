@@ -65,3 +65,22 @@ export async function addUser(userData) {
     }
 }
 
+export async function deleteUserByUsername(username) {
+    const token = sessionStorage.getItem('token');
+    const url = `http://localhost:8080/user/${username}`;
+
+    try {
+        const response = await axios.delete(url, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        // If the request is successful, return the response data
+        return response.data;
+    } catch (error) {
+        // If an error occurs, log the error and throw it for handling
+        console.error('Error deleting user:', error);
+        throw error;
+    }
+}
+
