@@ -50,9 +50,9 @@ export async function deleteUserRequest(requestId) {
 
 export async function getRequestByUserId(userId) {
     let encodedCredentials = encodeCredentials(backend_username, backend_password);
-
+    console.log(userId)
     return await resolve(
-        api.get(`/user/request/${userId}`, {
+        api.get(`/user/request/user/${userId}`, {
             headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem('token') }
         })
     );
@@ -132,5 +132,27 @@ export async function saveNewRequest(newRequest) {
     } catch (error) {
         console.error('Error decoding token:', error);
         return false;
+    }
+}
+
+export async function changeStatus(requestId, newStatus) {
+    const token = sessionStorage.getItem('token');
+
+    try {
+        const response = await axios({
+            method: 'put',
+            url: `http://localhost:8080/user/request/status/${requestId}`,
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            },
+            data: {
+                status: newStatus
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error changing request status:", error);
+        throw error;
     }
 }

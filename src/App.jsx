@@ -17,6 +17,7 @@ import Requests from "./pages/requests";
 import RequestsUser from "./pages/requestsUser";
 import NewRequestUser from "./pages/newRequestUser";
 import AddUser from "./components/AddUser";
+import UserRooms from "./pages/userRooms";
 import SingleRequestUser from "./pages/singleRequestUser"
 import UnauthorizedPage from './pages/unauthorizedPage';
 import NotFoundPage from './pages/404Page';
@@ -87,7 +88,7 @@ const App = () => {
       </div>
     )
   }
-  else if (path === "/homeUser" || path === "/requestsUser" || path === "/logsUser" || path === "/newRequestUser" || singleRequestPath(path)) {
+  else if (path === "/homeUser" || path === "/requestsUser" || path === "/logsUser" || path === "/newRequestUser" || singleRequestPath(path) || path === "/user-rooms") {
 
     return (
       <main className="font-body scrollable">
@@ -104,13 +105,12 @@ const App = () => {
                 </div> */}
           <div className="flex-[4_4_0%] ">
             <Routes>
-
               <Route path="/homeUser" element={ <HomeUser user={ user } /> } />
               <Route path="/requestsUser" element={ <RequestsUser /> } />
               <Route path="/newRequestUser" element={ <NewRequestUser /> } />
               <Route path="/logsUser" element={ <LogsUser /> } />
               <Route path="/singleRequestUser/:id" element={ <SingleRequestUser /> } />
-
+              <Route path="/user-rooms" element={<UserRooms />} />
             </Routes>
           </div>
         </div>

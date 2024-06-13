@@ -21,7 +21,7 @@ export async function getLogsForUser() {
     return await resolve(
         axios({
             method: 'get',
-            url: `http://localhost:8080/user/log/${userId}`,
+            url: `http://localhost:8080/user/log/user/${userId}`,
             headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem('token') }
         })
     );
