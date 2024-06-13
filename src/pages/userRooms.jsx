@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Card, CardContent, Typography, Grid, CircularProgress, Box, CardActionArea, CardActions, Button } from '@mui/material';
-import { getUserRooms } from '../api/rooms/roomsAPI'; // Adjust the import path as needed
+import { getUserRooms, enterRoom, leaveRoom } from '../api/rooms/roomsAPI'; // Adjust the import path as needed
 
 const UserRooms = () => {
     const [rooms, setRooms] = useState([]);
@@ -21,6 +21,26 @@ const UserRooms = () => {
 
         fetchRooms();
     }, []);
+
+    const handleEnterRoom = async (roomId) => {
+        try {
+            const response = await enterRoom(roomId);
+            console.log("Entered room:", response);
+            // Refresh the rooms list after entering room (if needed)
+        } catch (error) {
+            console.error("Error entering room:", error);
+        }
+    };
+
+    const handleLeaveRoom = async (roomId) => {
+        try {
+            const response = await leaveRoom(roomId);
+            console.log("Left room:", response);
+            // Refresh the rooms list after leaving room (if needed)
+        } catch (error) {
+            console.error("Error leaving room:", error);
+        }
+    };
 
     if (loading) {
         return (
@@ -68,10 +88,10 @@ const UserRooms = () => {
                                 padding: '16px',
                                 backgroundColor: 'rgba(255, 255, 255, 1)'
                             }}>
-                                <Button size="small" color="primary">
+                                <Button size="small" color="primary" onClick={() => handleEnterRoom(room.id)}>
                                     Enter Room
                                 </Button>
-                                <Button size="small" color="secondary">
+                                <Button size="small" color="secondary" onClick={() => handleLeaveRoom(room.id)}>
                                     Leave Room
                                 </Button>
                             </CardActions>

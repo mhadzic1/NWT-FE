@@ -1,70 +1,121 @@
-import React, { useState } from 'react';
-import { saveNewRequest } from '../api/requests/requestsAPI';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import 'react-toastify/dist/ReactToastify.css';
-import '../newRequestUser.css';
-import GradeModal from '../components/GradeModal';
-import { getLogsForUser } from '../api/logs/logsAPI';
-import SuccessModal from '../components/SuccessModal';
+import React, { useEffect, useState } from 'react';
+import { Container, Card, CardContent, Typography, Grid, CircularProgress, Box, CardActionArea, CardActions, Button } from '@mui/material';
+import { getRoomsWithNoAccess } from "../api/requests/requestsAPI"; // Adjust the import path as needed
+import axios from 'axios';
+import {jwtDecode} from "jwt-decode";
 
 const NewRequestUser = () => {
-    const [priority, setPriority] = useState('Low');
-    const [requestDescription, setRequestDescription] = useState('');
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const navigate = useNavigate();
+    const [rooms, setRooms] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const saveRequest = async () => {
-        const newRequest = {
-            opis: requestDescription,
-            status: 'PENDING',
-            kreirano: new Date().toISOString(),
-            prioritet: priority
+    useEffect(() => {
+        const fetchRooms = async () => {
+            try {
+                const response = await getRoomsWithNoAccess();
+                console.log(response);
+                setRooms(response.data.data);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching user rooms:", error);
+                setLoading(false);
+            }
         };
 
-        const success = await saveNewRequest(newRequest);
-        if (success) {
-            setShowSuccessModal(true);
+        fetchRooms();
+    }, []);
+
+    const handlePermissionRequest = async (roomId) => {
+        try {
+            const token = sessionStorage.getItem('token');
+            if (!token) {
+                throw new Error('Token or userId not found in session storage');
+            }
+
+            const decodedToken = jwtDecode(token);
+            console.log(decodedToken);
+            const userId = decodedToken.userId;
+
+            const requestBody = {
+                roomId: roomId,
+                userId: userId
+            };
+
+            const response = await axios.post('http://localhost:8080/user/request', requestBody, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                withCredentials: true
+            });
+
+            console.log('Permission request successful:', response.data);
+
+            // Optionally, update state or perform any other actions after successful request
+        } catch (error) {
+            console.error("Error requesting permission:", error);
+            // Handle error (e.g., show error message to user)
         }
     };
 
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
     return (
-        <div className="newRequest_container">
-            <div className="newRequest_h1">
-                <h1>New Request</h1>
-            </div>
-
-            <div className="newRequest_input">
-                <input
-                    type="text"
-                    id="request"
-                    name="newRequest"
-                    placeholder="Enter your request here..."
-                    value={ requestDescription }
-                    onChange={ (e) => setRequestDescription(e.target.value) }
-                />
-            </div>
-
-            <div className="newRequest_dropdown">
-                <label htmlFor="priority">Priority: </label>
-                <select
-                    id="priority"
-                    name="priority"
-                    value={ priority }
-                    onChange={ (e) => setPriority(e.target.value) }
-                >
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                    <option value="Critical">Critical</option>
-                </select>
-            </div>
-
-            <div className="newRequest_saveButton">
-                <button onClick={ saveRequest }>Save</button>
-            </div>
-            { showSuccessModal }
-        </div>
+        <Container>
+            <Typography variant="h4" component="h1" gutterBottom>
+                Accessible Rooms
+            </Typography>
+            <Grid container spacing={3}>
+                {rooms.map((room) => (
+                    <Grid item xs={12} sm={6} md={4} key={room.id}>
+                        <Card sx={{
+                            position: 'relative',
+                            '&:hover .card-actions': {
+                                display: 'flex',
+                            }
+                        }}>
+                            <CardActionArea>
+                                <CardContent>
+                                    <Typography variant="h5" component="div">
+                                        {room.name}
+                                    </Typography>
+                                    <Typography variant="body2" color="textSecondary">
+                                        Floor: {room.floor}
+                                    </Typography>
+                                    <Typography variant="body2" color="textSecondary">
+                                        Room ID: {room.id}
+                                    </Typography>
+                                    {/* Add more room details here as needed */}
+                                </CardContent>
+                            </CardActionArea>
+                            <CardActions className="card-actions" sx={{
+                                display: 'none',
+                                position: 'absolute',
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                justifyContent: 'space-between',
+                                padding: '16px',
+                                backgroundColor: 'rgba(255, 255, 255, 1)'
+                            }}>
+                                <Button
+                                    size="small"
+                                    color="primary"
+                                    onClick={() => handlePermissionRequest(room.id)}
+                                >
+                                    Request Permission
+                                </Button>
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+        </Container>
     );
 };
 

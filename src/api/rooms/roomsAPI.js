@@ -27,4 +27,68 @@ export const getUserRooms = async () => {
         console.error("Error fetching rooms:", error);
         throw error;
     }
+}
+
+export const enterRoom = async (roomId, keycardId) => {
+    try {
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            throw new Error('Token not found in session storage');
+        }
+
+        console.log(token);
+        const decodedToken = jwtDecode(token);
+        console.log(decodedToken);
+        const userId = decodedToken.userId;
+        console.log(userId);
+
+        const user = await getUserById(userId);
+        const keycardId = user.keycardId;
+
+        const response = await axios.post(`http://localhost:8080/rs_api/rooms/enterRoom/${roomId}/keycard/${keycardId}`, {
+            entryType: "IN"
+        }, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            withCredentials: true
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error("Error entering room:", error);
+        throw error;
+    }
+};
+
+export const leaveRoom = async (roomId) => {
+    try {
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            throw new Error('Token not found in session storage');
+        }
+
+        console.log(token);
+        const decodedToken = jwtDecode(token);
+        console.log(decodedToken);
+        const userId = decodedToken.userId;
+        console.log(userId);
+
+        const user = await getUserById(userId);
+        const keycardId = user.keycardId;
+
+        const response = await axios.post(`http://localhost:8080/rs_api/rooms/enterRoom/${roomId}/keycard/${keycardId}`, {
+            entryType: "OUT"
+        }, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            withCredentials: true
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error("Error leaving room:", error);
+        throw error;
+    }
 };

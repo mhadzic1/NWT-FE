@@ -3,7 +3,7 @@ import { resolve } from '../resolver';
 import { encodeCredentials } from '../encoder';
 import { backend_password, backend_username } from '../../config';
 import { jwtDecode } from "jwt-decode";
-import { getUserByUsername } from "../user/userAPI";
+import {getUserById, getUserByUsername} from "../user/userAPI";
 import { sendEmail } from "../mailer/mailer";
 
 const api = axios.create({
@@ -35,6 +35,26 @@ export async function getSuperAdminRequests(options) {
     return await resolve(
         api.get('/zahtjevi/superAdminZahtjevi', {
             params: options,
+            headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem('token') }
+        })
+    );
+}
+
+export async function getRoomsWithNoAccess() {
+    let encodedCredentials = encodeCredentials(backend_username, backend_password);
+
+    const token = sessionStorage.getItem('token');
+    console.log(token);
+    const decodedToken = jwtDecode(token);
+    console.log(decodedToken);
+    const userId = decodedToken.userId;
+    console.log(userId);
+
+    const user = await getUserById(userId);
+    const keycardId = user.keycardId;
+    console.log(keycardId);
+    return await resolve(
+        api.get(`/rs_api/rooms/getLockedRoomsWithKeycard/${keycardId}`, {
             headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem('token') }
         })
     );
@@ -108,7 +128,7 @@ export async function raiseRequestToSuperAdmin(requestId, raiseBool) {
     );
 }
 
-export async function saveNewRequest(newRequest) {
+export async function createRequest(newRequest) {
     const token = sessionStorage.getItem('token');
     if (!token) {
         console.error('No token found');
