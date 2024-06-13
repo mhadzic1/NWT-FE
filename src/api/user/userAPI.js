@@ -84,3 +84,19 @@ export async function deleteUserByUsername(username) {
     }
 }
 
+export async function getUserById(userId) {
+    const token = sessionStorage.getItem('token');
+
+    try {
+        const response = await axios({
+            method: 'get',
+            url: `http://localhost:8080/user/id/${userId}`,
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching user by ID:", error);
+        throw error;
+    }
+}
+

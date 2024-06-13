@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getRequests, getSuperAdminRequests } from '../api/requests/requestsAPI';
 import { jwtDecode } from 'jwt-decode';
 import StatusRow from '../components/statusRow';
+import { Box, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 
 const WidgetReq = () => {
     const token = sessionStorage.getItem('token');
@@ -16,23 +17,27 @@ const WidgetReq = () => {
 
     const userRole = decodedToken ? decodedToken.role : null;
     const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true); // Loading state
 
     useEffect(() => {
-        if (userRole === 'Admin') {
-            getRequests({})
-                .then(response => {
-                    console.log(response);
-                    setData(response.data.data);
-                })
-                .catch(error => console.error(error));
-        } else if (userRole === 'SuperAdmin') {
-            getSuperAdminRequests({})
-                .then(response => {
-                    setData(response.data.data);
-                })
-                .catch(error => console.error(error));
-        }
-    }, []);
+        const fetchData = async () => {
+            try {
+                let response;
+                if (userRole === 'Admin') {
+                    response = await getRequests({});
+                } else if (userRole === 'SuperAdmin') {
+                    response = await getSuperAdminRequests({});
+                }
+                setData(response.data.data);
+                setLoading(false); // Set loading to false after data is fetched
+            } catch (error) {
+                console.error(error);
+                setLoading(false); // Set loading to false even if there is an error
+            }
+        };
+
+        fetchData();
+    }, [userRole]);
 
     const handleStatusChange = (id, newStatus) => {
         // Update the data with the new status
@@ -46,35 +51,44 @@ const WidgetReq = () => {
         setData(updatedData);
     };
 
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
     return (
         <div className="shadow-lg p-6">
-            <h3 className="font-bold text-xl mb-4">Change Requests</h3>
-            <table className="table-fixed w-full text-center border-separate border-spacing-y-3">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>User</th>
-                    <th>Room</th>
-                    <th>Team</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {data &&
-                    data.map(item => (
-                        <StatusRow
-                            key={item.requestId}
-                            id={item.requestId}
-                            user={item.user}
-                            room={item.room.name}
-                            team={item.team}
-                            status={item.status}
-                            onStatusChange={handleStatusChange}
-                        />
-                    ))}
-                </tbody>
-            </table>
+            <h3 className="font-bold text-xl mb-4">User Requests</h3>
+            <TableContainer component={Paper}>
+            <Table className="w-full" aria-label="change requests table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>ID</TableCell>
+                            <TableCell>User</TableCell>
+                            <TableCell>Room</TableCell>
+                            <TableCell>Team</TableCell>
+                            <TableCell>Status</TableCell>
+                            <TableCell>Actions</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data && data.map(item => (
+                            <StatusRow
+                                key={item.requestId}
+                                id={item.requestId}
+                                user={item.user}
+                                room={item.room.name}
+                                team={item.team}
+                                status={item.status}
+                                onStatusChange={handleStatusChange}
+                            />
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </div>
     );
 };

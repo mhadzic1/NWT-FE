@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Avatar } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
-import { Link, Navigate } from "react-router-dom";
-import { getAllUsers } from "../api/user/userAPI";
-import { Button, Snackbar } from "@mui/material";
+import { Avatar, Box, CircularProgress, Snackbar, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Delete } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import { getAllUsers, deleteUserByUsername } from "../api/user/userAPI";
 import AddUser from "../components/AddUser";
-import {deleteUserByUsername} from "../api/user/userAPI";
 
 const Users = () => {
   const [data, setData] = useState([]);
@@ -65,29 +63,21 @@ const Users = () => {
       ),
     },
     { field: "email", headerName: "Email", width: 200 },
-    {
-      field: "role",
-      headerName: "Role",
-      width: 120,
-    },
+    { field: "role", headerName: "Role", width: 120 },
     {
       field: "actions",
       headerName: "Actions",
-      width: 200,
+      width: 160,
       renderCell: (params) => (
-          <div className="flex gap-2">
-            <Link to={`/user/${params.row.id}`}>
-              <button className="bg-green-500 font-bold text-white px-3 py-1 rounded-md">
-                Edit <Edit fontSize="small" />
-              </button>
-            </Link>
-            <button
-                onClick={() => deleteUser(params.row.username)}
-                className="bg-red-500 font-bold text-white px-3 py-1 rounded-md"
-            >
-              Delete <Delete fontSize="small" />
-            </button>
-          </div>
+          <Button
+              onClick={() => deleteUser(params.row.username)}
+              variant="contained"
+              color="error"
+              size="small"
+              startIcon={<Delete />}
+          >
+            Delete
+          </Button>
       ),
     },
   ];
@@ -99,6 +89,14 @@ const Users = () => {
   const handleCloseAddUserModal = () => {
     setOpenAddUserModal(false);
   };
+
+  if (loading) {
+    return (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <CircularProgress />
+        </Box>
+    );
+  }
 
   return (
       <>
@@ -112,16 +110,34 @@ const Users = () => {
           </button>
         </div>
         <div className="h-[700px] shadow-lg p-6 m-2">
-          <DataGrid
-              rows={data}
-              columns={columns}
-              pageSize={10}
-              rowsPerPageOptions={[10]}
-              checkboxSelection
-              disableSelectionOnClick
-          />
+          <TableContainer component={Box} sx={{ maxHeight: 440 }}>
+            <Table stickyHeader aria-label="users table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                      <TableCell key={column.field} width={column.width}>
+                        {column.headerName}
+                      </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data.map((row) => (
+                    <TableRow key={row.id}>
+                      {columns.map((column) => (
+                          <TableCell key={column.field} align="left">
+                            {column.renderCell
+                                ? column.renderCell({ row, ...column })
+                                : row[column.field]}
+                          </TableCell>
+                      ))}
+                    </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
-        <AddUser open={openAddUserModal} onClose={handleCloseAddUserModal}/>
+        <AddUser open={openAddUserModal} onClose={handleCloseAddUserModal} />
         <Snackbar
             open={snackbarOpen}
             autoHideDuration={6000}
