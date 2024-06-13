@@ -5,7 +5,7 @@ import FeaturedInfo from "../components/featuredInfo";
 import WidgetLG from "../components/widgetLG";
 import WidgetSM from "../components/widgetSM";
 
-const Home = () => {
+const Home = ({user}) => {
     const token = sessionStorage.getItem('token');
     let decodedToken;
     if (token) {
@@ -24,22 +24,15 @@ const Home = () => {
     }
 
     return (
-        <section className="p-3">
-            <div className="flex gap-5 mb-6">
-                <FeaturedInfo type="Administration" value="1,200" />
-                <FeaturedInfo type="Logs" value="3,200" />
-                <FeaturedInfo type="Requests" value="5,000" />
+        <div className="user-profile">
+            <img src={user.picture} alt={`${user.username}'s profile`} className="profile-picture" />
+            <div className="user-details">
+                <h2>{user.username}</h2>
+                <p>Ime: {user.firstName}</p>
+                <p>Prezime: {user.lastName}</p>
+                <p>Datum rođenja: {user.birthDate}</p>
             </div>
-
-            <div className="flex gap-4">
-                <div className="flex-1">
-                    <WidgetSM />
-                </div>
-                <div className="flex-[2_2_0%]">
-                    <WidgetLG />
-                </div>
-            </div>
-        </section>
+        </div>
     );
 };
 

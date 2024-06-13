@@ -7,6 +7,7 @@ import {jwtDecode} from "jwt-decode";
 const NewRequestUser = () => {
     const [rooms, setRooms] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [processingRequest, setProcessingRequest] = useState(false); // State for tracking request processing
 
     useEffect(() => {
         const fetchRooms = async () => {
@@ -26,6 +27,7 @@ const NewRequestUser = () => {
 
     const handlePermissionRequest = async (roomId) => {
         try {
+            setProcessingRequest(true); // Start processing request
             const token = sessionStorage.getItem('token');
             if (!token) {
                 throw new Error('Token or userId not found in session storage');
@@ -54,6 +56,8 @@ const NewRequestUser = () => {
         } catch (error) {
             console.error("Error requesting permission:", error);
             // Handle error (e.g., show error message to user)
+        } finally {
+            setProcessingRequest(false); // Stop processing request (whether success or error)
         }
     };
 
@@ -67,9 +71,7 @@ const NewRequestUser = () => {
 
     return (
         <Container>
-            <Typography variant="h4" component="h1" gutterBottom>
-                Accessible Rooms
-            </Typography>
+            <h3 className="font-bold text-xl mb-4">Request Permission</h3>
             <Grid container spacing={3}>
                 {rooms.map((room) => (
                     <Grid item xs={12} sm={6} md={4} key={room.id}>
@@ -107,8 +109,13 @@ const NewRequestUser = () => {
                                     size="small"
                                     color="primary"
                                     onClick={() => handlePermissionRequest(room.id)}
+                                    disabled={processingRequest} // Disable button when request is processing
                                 >
-                                    Request Permission
+                                    {processingRequest ? (
+                                        <CircularProgress size={24} color="inherit" />
+                                    ) : (
+                                        'Request Permission'
+                                    )}
                                 </Button>
                             </CardActions>
                         </Card>

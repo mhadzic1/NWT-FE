@@ -52,11 +52,9 @@ const UserRooms = () => {
 
     return (
         <Container>
-            <Typography variant="h4" component="h1" gutterBottom>
-                Accessible Rooms
-            </Typography>
+            <h3 className="font-bold text-xl mb-4">Accessible Rooms</h3>
             <Grid container spacing={3}>
-                {rooms.map((room) => (
+            {rooms.map((room) => (
                     <Grid item xs={12} sm={6} md={4} key={room.id}>
                         <Card sx={{
                             position: 'relative',

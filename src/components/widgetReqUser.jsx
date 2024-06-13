@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getRequestByUserId } from "../api/requests/requestsAPI";
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import {
     CircularProgress,
     Table,
@@ -11,7 +11,8 @@ import {
     TableRow,
     Paper,
     Box,
-    Button
+    Button,
+    Grid
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -67,10 +68,16 @@ const RequestsUser = () => {
 
     return (
         <div className="shadow-lg p-6">
-            <h3 className="font-bold text-xl mb-4">Requests by User</h3>
-            <Button variant="contained" color="primary" onClick={() => navigate("/newRequestUser")}>
-                New Request
-            </Button>
+            <Grid container justifyContent="space-between" alignItems="center" className="mb-4">
+                <Grid item>
+                    <h3 className="font-bold text-xl">Requests by User</h3>
+                </Grid>
+                <Grid item>
+                    <Button variant="contained" color="primary" onClick={() => navigate("/newRequestUser")}>
+                        New Request
+                    </Button>
+                </Grid>
+            </Grid>
             <TableContainer component={Paper} className="mt-4">
                 <Table aria-label="requests table">
                     <TableHead>

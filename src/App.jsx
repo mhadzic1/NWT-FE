@@ -129,7 +129,7 @@ const App = () => {
 
           <div className="flex-[4_4_0%] ">
             <Routes>
-              <Route path="/home" element={ <Home /> } />
+              <Route path="/home" element={ <Home user={user}/> } />
               {/* <Route path="/homeUser" element={ <HomeUser /> } /> */ }
               <Route path="/requests" element={ <Requests /> } />
               <Route path="/login" element={ <LoginPage /> } />
